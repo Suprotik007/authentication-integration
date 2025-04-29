@@ -1,7 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React, { use } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { AuthContext } from './Context/AuthContext';
 
 const Login = () => {
+
+  const {signInUser}=use(AuthContext)
+const Navigate=useNavigate()
+
+  const handleLogin=e=>{
+    e.preventDefault()
+    const email=e.target.email.value
+    const password=e.target.password.value
+    console.log(email,password);
+   
+    signInUser(email,password)
+    .then(result=>{
+      console.log(result.user);
+      Navigate('/')
+      
+    })
+    .catch(error=>{
+      console.log(error);
+      
+    })
+
+    
+    
+  }
     return (
         <div>
             
@@ -10,7 +35,7 @@ const Login = () => {
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <h1 className='text-4xl text-amber-300'>Login</h1>
       <div className="card-body">
-        <form className="fieldset">
+        <form onSubmit={handleLogin} className="fieldset">
           <label className="label">Email</label>
           <input type="email" className="input" name='email' placeholder="Email" />
           <label className="label">Password</label>
